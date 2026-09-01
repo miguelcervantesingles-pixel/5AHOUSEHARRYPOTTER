@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOGWARTS ENGLISH CLASS CEREMONY</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: #ffe9c9;
+    background: #05040f;
+    position: relative;
+  }
+
+  /* ======= FONDO TEMÁTICO EN MOVIMIENTO ======= */
+  .sky {
+    position: fixed; inset: 0; z-index: 0; overflow: hidden;
+    background: radial-gradient(ellipse at 50% 0%, #1b1640 0%, #0a0720 55%, #050410 100%);
+  }
+  .stars {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(1.5px 1.5px at 20% 30%, #fff8, transparent),
+      radial-gradient(1px  1px  at 40% 70%, #ffda, transparent),
+      radial-gradient(1.5px 1.5px at 60% 20%, #fff6, transparent),
+      radial-gradient(1px  1px  at 80% 50%, #ffec, transparent),
+      radial-gradient(2px  2px  at 15% 80%, #fff5, transparent),
+      radial-gradient(1px  1px  at 90% 85%, #ffda, transparent),
+      radial-gradient(1px  1px  at 50% 90%, #ffec, transparent),
+      radial-gradient(1.5px 1.5px at 70% 65%, #fff8, transparent);
+    background-size: 200px 200px;
+    animation: twinkle 4s ease-in-out infinite;
+    opacity: .7;
+  }
+  @keyframes twinkle {
+    0%,100% { opacity: .4; }
+    50% { opacity: .9; }
+  }
+  .cloud {
+    position: absolute; z-index: 0; width: 900px; height: 260px;
+    filter: blur(2px);
+  }
+  .cloud .c {
+    position: absolute; border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, rgba(255,255,255,.10), rgba(255,255,255,.03));
+  }
+  .c1 { width: 300px; height: 120px; top: 60px; left: 60px; }
+  .c2 { width: 220px; height: 220px; top: 0; left: 240px; }
+  .c3 { width: 260px; height: 150px; top: 70px; left: 420px; }
+  @keyframes drift {
+    0% { transform: translateX(-1000px); }
+    100% { transform: translateX(120vw); }
+  }
+  .cloud1 { top: 8%; animation: drift 60s linear infinite; }
+  .cloud2 { top: 30%; width: 640px; animation: drift 90s linear infinite; animation-delay: -30s; }
+  .cloud3 { top: 55%; width: 760px; animation: drift 75s linear infinite; animation-delay: -55s; }
+  .cloud2 .c1 { width: 220px; height: 90px; }
+  .cloud2 .c2 { width: 170px; height: 170px; }
+  .cloud2 .c3 { width: 190px; height: 110px; }
+  .cloud3 .c1 { width: 260px; height: 110px; }
+  .cloud3 .c2 { width: 200px; height: 200px; }
+  .cloud3 .c3 { width: 230px; height: 130px; }
+  .bat {
+    position: absolute; width: 40px; height: 24px; z-index: 1; opacity: .55;
+  }
+  .bat span { position: absolute; width: 20px; height: 16px; top: 3px; }
+  .bat span:nth-child(1) { left: 0; border-radius: 20px 0 0 20px; }
+  .bat span:nth-child(2) { right: 0; border-radius: 0 20px 20px 0; }
+  .bat span:nth-child(3) { left: 14px; width: 12px; height: 22px; top: -6px; background: #000; border-radius: 50% 50% 0 0; }
+  .bat:nth-child(odd) span:nth-child(1),
+  .bat:nth-child(odd) span:nth-child(2) { animation: flap 0.4s ease-in-out infinite alternate; }
+  .bat:nth-child(even) span:nth-child(1),
+  .bat:nth-child(even) span:nth-child(2) { animation: flap 0.5s ease-in-out infinite alternate; animation-delay: .2s; }
+  @keyframes flap {
+    0% { transform: rotate(12deg); }
+    100% { transform: rotate(-12deg); }
+  }
+  @keyframes fly {
+    0% { transform: translate(0,0); }
+    25% { transform: translate(30vw, -8vh); }
+    50% { transform: translate(60vw, 5vh); }
+    75% { transform: translate(90vw, -10vh); }
+    100% { transform: translate(120vw, 20vh); }
+  }
+  .bat1 { top: 12%; animation: fly 26s linear infinite; }
+  .bat2 { top: 18%; animation: fly 34s linear infinite; animation-delay: -10s; }
+  .bat3 { top: 45%; animation: fly 40s linear infinite; animation-delay: -22s; }
+
+  /* ======= CONTENIDO ======= */
+  .content {
+    position: relative; z-index: 2;
+    max-width: 1000px; margin: 0 auto;
+    padding: 30px 20px 60px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+
+  /* Título */
+  .title-wrap { text-align: center; margin-bottom: 20px; }
+  .title-wrap h1 {
+    font-size: clamp(1.8rem, 5.5vw, 3.4rem);
+    letter-spacing: 2px;
+    background: linear-gradient(180deg, #ffd97a, #f5b63a 45%, #7a4a12);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 25px rgba(255,200,80,.35);
+    font-weight: 800;
+    animation: titleGlow 3s ease-in-out infinite;
+  }
+  @keyframes titleGlow {
+    0%,100% { filter: drop-shadow(0 0 6px rgba(255,190,60,.4)); }
+    50% { filter: drop-shadow(0 0 20px rgba(255,190,60,.85)); }
+  }
+  .title-wrap .sub {
+    margin-top: 8px; font-size: 1.1rem; color: #cdb488;
+    letter-spacing: 5px; font-variant: small-caps;
+  }
+  .stars-line { margin: 12px auto 0; font-size: 1.3rem; color: #f0c960; letter-spacing: 10px; }
+
+  /* ======= PANTALLA INICIO ======= */
+  #startScreen {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 40px;
+    text-align: center; margin-bottom: 40px;
+  }
+  .start-hat {
+    font-size: clamp(5rem, 20vw, 9rem);
+    animation: bob 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(255,190,60,.6));
+  }
+  @keyframes bob {
+    0%,100% { transform: translateY(0) rotate(-4deg); }
+    50% { transform: translateY(-18px) rotate(4deg); }
+  }
+  .btn {
+    font-family: 'Georgia', serif;
+    padding: 16px 40px; font-size: 1.4rem; font-weight: 800; letter-spacing: 1px;
+    color: #3a2405; cursor: pointer;
+    background: linear-gradient(180deg, #ffe9a8, #e0b355);
+    border: 2px solid #8a5a15; border-radius: 40px;
+    box-shadow: 0 5px 0 #8a5a15, 0 8px 16px rgba(0,0,0,.4);
+    transition: transform .08s, box-shadow .08s;
+    text-shadow: 0 1px 0 rgba(255,255,255,.4);
+  }
+  .btn:hover { filter: brightness(1.05); }
+  .btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #8a5a15, 0 4px 8px rgba(0,0,0,.4); }
+  .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+  .btn.big { font-size: 1.8rem; padding: 20px 48px; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 5px 0 #8a5a15, 0 0 0 0 rgba(255,200,80,.5); }
+    50% { box-shadow: 0 5px 0 #8a5a15, 0 0 0 18px rgba(255,200,80,0); }
+  }
+
+  /* ======= PANTALLA CEREMONIA ======= */
+  #ceremony { display: none; width: 100%; flex-direction: column; align-items: center; }
+  #ceremony.active { display: flex; }
+
+  /* Progreso */
+  .progress {
+    width: 100%; max-width: 600px; text-align: center; margin-bottom: 16px;
+  }
+  .progress .count {
+    font-size: 1.1rem; color: #cdb488; letter-spacing: 2px;
+  }
+  .bar { height: 10px; border-radius: 10px; background: rgba(255,255,255,.1); margin-top: 8px; overflow: hidden; }
+  .bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg,#f0c960,#fff2c4); border-radius: 10px; transition: width .6s ease; }
+
+  /* Banner del alumno en el frente */
+  .stage {
+    width: 100%; max-width: 680px; text-align: center;
+    background: linear-gradient(135deg, rgba(30,24,60,.9), rgba(12,8,30,.92));
+    border: 2px solid #6b5a2f; border-radius: 18px;
+    padding: 22px 24px; margin-bottom: 18px;
+    box-shadow: 0 0 30px rgba(255,200,80,.12);
+    min-height: 120px;
+  }
+  .stage .call {
+    font-size: .9rem; letter-spacing: 4px; color: #b9a97e; text-transform: uppercase;
+  }
+  .stage .student {
+    font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 800; color: #fff2d0;
+    margin-top: 8px; min-height: 50px;
+    animation: appear .6s ease;
+  }
+  @keyframes appear {
+    from { opacity: 0; transform: translateY(12px) scale(.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .stage .house {
+    font-size: clamp(1.6rem, 4.5vw, 2.3rem); font-weight: 800; letter-spacing: 2px;
+    font-variant: small-caps; margin-top: 8px; min-height: 42px;
+  }
+
+  /* Ruleta */
+  .wheel-area { display: flex; flex-direction: column; align-items: center; margin-bottom: 24px; }
+  .wheel-box { position: relative; width: min(72vw, 360px); height: min(72vw, 360px); }
+  canvas { width: 100%; height: 100%; display: block; filter: drop-shadow(0 0 18px rgba(255,180,60,.3)); }
+  .pointer {
+    position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
+    width: 0; height: 0; z-index: 5;
+    border-left: 20px solid transparent; border-right: 20px solid transparent;
+    border-top: 42px solid #f0c14b;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,.6));
+  }
+  .pointer::after {
+    content: ''; position: absolute; top: -46px; left: -20px;
+    width: 0; height: 0;
+    border-left: 20px solid transparent; border-right: 20px solid transparent;
+    border-top: 34px solid #7a4a12;
+  }
+  .hub {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 54px; height: 54px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff2c4, #d9a441 60%, #8a5a15);
+    box-shadow: 0 0 15px rgba(255,220,120,.7);
+    z-index: 6; border: 3px solid #6b4a12;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; color: #3a2405; font-size: .6rem; text-align: center; line-height: 1;
+  }
+  .controls { display: flex; gap: 14px; margin-top: 18px; flex-wrap: wrap; justify-content: center; }
+  .btn.small { padding: 10px 18px; font-size: 1rem; }
+
+  /* Historial (quién ya fue sorteado) */
+  .history {
+    width: 100%; max-width: 680px; margin-top: 14px;
+    background: rgba(10,8,24,.6); border: 1px solid #6b5a2f; border-radius: 14px;
+    padding: 14px 18px; backdrop-filter: blur(3px); min-height: 60px;
+  }
+  .history .h-title { font-size: .9rem; letter-spacing: 3px; color: #b9a97e; text-transform: uppercase; margin-bottom: 8px; }
+  .history .h-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    padding: 5px 12px; border-radius: 20px; font-size: .9rem;
+    border: 1px solid; color: #fff;
+  }
+
+  /* Pantalla final */
+  #finalScreen { display: none; width: 100%; text-align: center; flex-direction: column; align-items: center; }
+  #finalScreen.active { display: flex; }
+  .final-title { font-size: 2.2rem; color: #ffd97a; margin-bottom: 6px; font-weight: 800; }
+  .final-sub { color: #cdb488; margin-bottom: 24px; letter-spacing: 2px; }
+  .houses-grid { width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+  .house-card { border-radius: 14px; padding: 16px 18px; border: 2px solid; background: rgba(10,8,24,.7); box-shadow: 0 6px 18px rgba(0,0,0,.5); text-align: left; }
+  .house-card h3 { font-size: 1.3rem; font-variant: small-caps; margin-bottom: 10px; }
+  .house-card ul { list-style: none; }
+  .house-card li { padding: 4px 6px; border-bottom: 1px dashed rgba(255,255,255,.12); font-size: .98rem; color: #f2ead6; }
+  .house-card li:last-child { border-bottom: none; }
+  .house-card.gryffindor { border-color: #740001; box-shadow: 0 6px 18px rgba(116,0,1,.4); }
+  .house-card.gryffindor h3 { color: #ffe27a; }
+  .house-card.ravenclaw { border-color: #0e1a40; box-shadow: 0 6px 18px rgba(14,26,64,.5); }
+  .house-card.ravenclaw h3 { color: #8bb8ff; }
+  .house-card.slytherin { border-color: #1a472a; box-shadow: 0 6px 18px rgba(26,71,42,.5); }
+  .house-card.slytherin h3 { color: #5dd18a; }
+  .house-card.hufflepuff { border-color: #a88a1f; box-shadow: 0 6px 18px rgba(168,138,31,.4); }
+  .house-card.hufflepuff h3 { color: #ffe27a; }
+
+  .footer { margin-top: 26px; text-align: center; color: #8f865f; font-style: italic; font-size: .9rem; }
+</style>
+</head>
+<body>
+
+<div class="sky">
+  <div class="stars"></div>
+  <div class="cloud cloud1"><div class="c c1"></div><div class="c c2"></div><div class="c c3"></div></div>
+  <div class="cloud cloud2"><div class="c c1"></div><div class="c c2"></div><div class="c c3"></div></div>
+  <div class="cloud cloud3"><div class="c c1"></div><div class="c c2"></div><div class="c c3"></div></div>
+  <div class="bat bat1"><span></span><span></span><span></span></div>
+  <div class="bat bat2"><span></span><span></span><span></span></div>
+  <div class="bat bat3"><span></span><span></span><span></span></div>
+</div>
+
+<div class="content">
+  <div class="title-wrap">
+    <h1>HOGWARTS ENGLISH CLASS CEREMONY</h1>
+    <div class="sub">⚡ La Ceremonia del Sombrero Seleccionador ⚡</div>
+    <div class="stars-line">✦ ✦ ✦</div>
+  </div>
+
+  <!-- PANTALLA DE INICIO -->
+  <div id="startScreen">
+    <div class="start-hat">🎩</div>
+    <button class="btn big" id="startBtn">INICIAR EL GORRO</button>
+    <div class="footer">Haz clic para comenzar la ceremonia de selección...</div>
+  </div>
+
+  <!-- PANTALLA DE CEREMONIA -->
+  <div id="ceremony">
+    <div class="progress">
+      <div class="count" id="progressCount">0 / 0</div>
+      <div class="bar"><div class="bar-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="stage">
+      <div class="call" id="stageCall">El Sombrero Seleccionador llama a...</div>
+      <div class="student" id="stageStudent">—</div>
+      <div class="house" id="stageHouse"></div>
+    </div>
+
+    <div class="wheel-area">
+      <div class="wheel-box">
+        <div class="pointer"></div>
+        <canvas id="wheel" width="800" height="800"></canvas>
+        <div class="hub">Sombrero</div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="spinBtn">🎩 GIRAR</button>
+        <button class="btn small" id="nextBtn" disabled>Siguiente alumno ➜</button>
+        <button class="btn small" id="muteBtn">🔊 Voz: Sí</button>
+      </div>
+    </div>
+
+    <div class="history">
+      <div class="h-title">Alumnos ya asignados</div>
+      <div class="h-list" id="historyList">
+        <span class="footer">Aún no hay asignaciones</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANTALLA FINAL -->
+  <div id="finalScreen">
+    <div class="final-title">¡La Ceremonia ha Terminado!</div>
+    <div class="final-sub">Estas son las casas de cada alumno:</div>
+    <div class="houses-grid" id="housesGrid"></div>
+    <button class="btn" id="restartBtn" style="margin-top:26px;">↺ Comenzar de nuevo</button>
+  </div>
+
+  <div class="footer">✦ Un mismo sombrero distingue a cada uno de ustedes ✦</div>
+</div>
+
+<script>
+/* =====================================================================
+   DATOS OCULTOS (NO SE MUESTRAN AL INICIO)
+   Cada alumno tiene una casa predeterminada: el sombrero SIEMPRE lo
+   coloca en esa casa, aunque parezca un sorteo aleatorio.
+   ===================================================================== */
+const houses = {
+  gryffindor: {
+    name: 'Gryffindor',
+    color: '#740001',
+    color2: '#ffe27a',
+    students: ['Ian Abdiel','Victoria Valeska','Sofia Abigail','Emmeline','Angel Emmanuel']
+  },
+  ravenclaw: {
+    name: 'Ravenclaw',
+    color: '#0e1a40',
+    color2: '#8bb8ff',
+    students: ['Sofia Valentina','Bernardo Rafael','Frida Ximena','Victor Eduardo','Karim Andres']
+  },
+  slytherin: {
+    name: 'Slytherin',
+    color: '#1a472a',
+    color2: '#5dd18a',
+    students: ['Aranza Mayte','Jesus Eduardo','Melissa','Miguel Efrain','Axel']
+  },
+  hufflepuff: {
+    name: 'Hufflepuff',
+    color: '#a88a1f',
+    color2: '#ffe27a',
+    students: ['Sophia Alejandra','Danna Sofia','Irving Ricardo','Jesus Emiliano','Andrea Ximena','Leonardo Alejandro']
+  }
+};
+const houseOrder = ['gryffindor','ravenclaw','slytherin','hufflepuff'];
+
+// Mapa interno: alumno -> casa (LA SOLUCIÓN, se mantiene oculta)
+const SORTEO = {};
+for (const key of houseOrder) {
+  houses[key].students.forEach(s => { SORTEO[s] = key; });
+}
+
+// Alumno -> color de su casa (para chips y banner)
+function studentColor(student) {
+  return houses[SORTEO[student]].color2;
+}
+
+/* =================== ESTADO =================== */
+let allStudents = [];
+let remaining = [];
+let currentStudent = null;
+let spinning = false;
+
+/* =================== RULETA =================== */
+const canvas = document.getElementById('wheel');
+const ctx = canvas.getContext('2d');
+const SIZE = 800, CX = SIZE/2, CY = SIZE/2, R = 360;
+const SLICE = (2*Math.PI)/houseOrder.length;
+let wheelRotation = 0;
+
+function drawWheel() {
+  ctx.clearRect(0,0,SIZE,SIZE);
+  ctx.save();
+  ctx.translate(CX, CY);
+  ctx.rotate(wheelRotation);
+  for (let i=0; i<houseOrder.length; i++) {
+    const key = houseOrder[i];
+    const h = houses[key];
+    const start = i*SLICE - Math.PI/2;
+    const end = start + SLICE;
+    ctx.beginPath();
+    ctx.moveTo(0,0);
+    ctx.arc(0,0,R,start,end);
+    ctx.closePath();
+    ctx.fillStyle = h.color;
+    ctx.fill();
+    ctx.strokeStyle = '#aa8733';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+    const mid = start + SLICE/2;
+    ctx.save();
+    ctx.rotate(mid);
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = h.color2;
+    ctx.font = 'bold 46px Georgia';
+    ctx.shadowColor = 'rgba(0,0,0,.6)';
+    ctx.shadowBlur = 6;
+    ctx.fillText(h.name, R*0.55, 0);
+    ctx.restore();
+  }
+  ctx.beginPath();
+  ctx.arc(0,0,R+6,0,2*Math.PI);
+  ctx.strokeStyle = '#e0b355';
+  ctx.lineWidth = 8;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(0,0,26,0,2*Math.PI);
+  ctx.fillStyle = '#8a5a15';
+  ctx.fill();
+  ctx.restore();
+}
+
+function setTargetForIndex(targetIdx) {
+  const base = -(targetIdx*SLICE + SLICE/2);
+  const mod2 = 2*Math.PI;
+  const turns = Math.ceil((wheelRotation - base) / mod2) + 4;
+  return base + turns*mod2;
+}
+
+/* =================== FLUJO =================== */
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startCeremony() {
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('ceremony').classList.add('active');
+  document.getElementById('finalScreen').classList.remove('active');
+
+  allStudents = houseOrder.flatMap(k => houses[k].students);
+  remaining = shuffle(allStudents);
+  updateProgress();
+  document.getElementById('historyList').innerHTML = '<span class="footer">Aún no hay asignaciones</span>';
+
+  callNext();
+}
+
+function callNext() {
+  if (remaining.length === 0) { finishCeremony(); return; }
+  // tomar el siguiente de la lista aleatoria y mostrarlo como "sentándose al frente"
+  currentStudent = remaining[0];
+  const st = document.getElementById('stageStudent');
+  st.textContent = currentStudent;
+  st.style.color = '';
+  const houseEl = document.getElementById('stageHouse');
+  houseEl.textContent = '';
+  houseEl.style.color = '';
+  document.getElementById('stageCall').textContent = 'El Sombrero Seleccionador llama a...';
+  document.getElementById('spinBtn').disabled = false;
+  document.getElementById('nextBtn').disabled = true;
+}
+
+function spin() {
+  if (spinning || !currentStudent) return;
+  spinning = true;
+  document.getElementById('spinBtn').disabled = true;
+
+  const target = SORTEO[currentStudent];
+  const targetIndex = houseOrder.indexOf(target);
+  const endRotation = setTargetForIndex(targetIndex);
+
+  const start = performance.now();
+  const startRotation = wheelRotation;
+  const totalRot = endRotation - startRotation;
+  const duration = 4500;
+
+  function frame(now) {
+    const p = Math.min(1, (now - start)/duration);
+    const eased = 1 - Math.pow(1 - p, 3);
+    wheelRotation = startRotation + totalRot*eased;
+    if (p > 0.93) {
+      const wobble = Math.sin(now*0.06)*(1-p)*1.05;
+      const v = Math.min(1,(p-0.93)/0.07);
+      wheelRotation += wobble + Math.sin(now*1.2)*0.25*v;
+    }
+    drawWheel();
+    if (p < 1) requestAnimationFrame(frame);
+    else {
+      wheelRotation = endRotation;
+      drawWheel();
+      finishTurn();
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+function finishTurn() {
+  const target = SORTEO[currentStudent];
+  const house = houses[target];
+  const st = document.getElementById('stageStudent');
+  const houseEl = document.getElementById('stageHouse');
+  st.style.color = house.color2;
+  houseEl.textContent = house.name + '!';
+  houseEl.style.color = house.color2;
+  document.getElementById('stageCall').textContent = 'El Sombrero Seleccionador decide...';
+
+  // Reproducir la voz de la casa
+  playHouseSound(target);
+
+  // quitar al alumno de la lista de pendientes
+  remaining.shift();
+  addChip(currentStudent, target);
+
+  spinning = false;
+  updateProgress();
+
+  if (remaining.length === 0) {
+    document.getElementById('spinBtn').disabled = true;
+    setTimeout(finishCeremony, 2200);
+  } else {
+    document.getElementById('nextBtn').disabled = false;
+  }
+}
+
+function addChip(student, key) {
+  const list = document.getElementById('historyList');
+  const first = list.firstChild;
+  if (first && first.classList && first.classList.contains('footer')) {
+    list.innerHTML = '';
+  }
+  const chip = document.createElement('span');
+  chip.className = 'chip';
+  chip.style.borderColor = houses[key].color2;
+  chip.style.background = houses[key].color + 'cc';
+  chip.textContent = student + ' → ' + houses[key].name;
+  list.appendChild(chip);
+}
+
+function updateProgress() {
+  const total = allStudents.length;
+  const done = total - remaining.length;
+  document.getElementById('progressCount').textContent = done + ' / ' + total;
+  document.getElementById('progressFill').style.width = (done/total*100) + '%';
+}
+
+function finishCeremony() {
+  document.getElementById('ceremony').classList.remove('active');
+  document.getElementById('finalScreen').classList.add('active');
+  buildHousesGrid();
+}
+
+function buildHousesGrid() {
+  const grid = document.getElementById('housesGrid');
+  grid.innerHTML = '';
+  const shieldColors = {
+    gryffindor: {c1:'#740001',c2:'#e8b23a'},
+    ravenclaw:  {c1:'#0e1a40',c2:'#8bb8ff'},
+    slytherin:  {c1:'#1a472a',c2:'#5dd18a'},
+    hufflepuff: {c1:'#a88a1f',c2:'#ffe27a'}
+  };
+  const svgShield = (c) => `<svg class="shield" viewBox="0 0 30 34" xmlns="http://www.w3.org/2000/svg">` +
+    `<path d="M15 1 L28 6 V17 C28 26 22 31 15 33 C8 31 2 26 2 17 V6 Z" fill="${c.c1}" stroke="${c.c2}" stroke-width="1.6"/>` +
+    `<path d="M15 12 L22 15 V20 C22 25 19 27.5 15 29 C11 27.5 8 25 8 20 V15 Z" fill="#f2e6c8"/></svg>`;
+  for (const key of houseOrder) {
+    const h = houses[key];
+    const card = document.createElement('div');
+    card.className = 'house-card ' + key;
+    let list = h.students.map(s => `<li>${s}</li>`).join('');
+    card.innerHTML = `<h3>${svgShield(shieldColors[key])} ${h.name}</h3><ul>${list}</ul>`;
+    grid.appendChild(card);
+  }
+}
+
+/* =================== AUDIO DE LAS CASAS =================== */
+// La carpeta "audios" debe estar junto a este archivo (en el Escritorio).
+// Archivos esperados: gryffindor.mp3, ravenclaw.mp3, slytherin.mp3, hufflepuff.mp3
+const AUDIO_PATH = 'audios/';
+let soundOn = true;
+const audioCache = {};
+
+function getAudio(key) {
+  if (!audioCache[key]) {
+    audioCache[key] = new Audio(AUDIO_PATH + key + '.mp3');
+    audioCache[key].onerror = () => { /* si falta el archivo, no hace nada */ };
+  }
+  return audioCache[key];
+}
+
+function playHouseSound(key) {
+  if (!soundOn) return;
+  const a = getAudio(key);
+  a.pause();
+  a.currentTime = 0;
+  const p = a.play();
+  if (p && p.catch) p.catch(() => {});
+}
+
+function toggleSound() {
+  soundOn = !soundOn;
+  document.getElementById('muteBtn').textContent = soundOn ? '🔊 Voz: Sí' : '🔇 Voz: No';
+}
+
+/* =================== EVENTOS =================== */
+document.getElementById('startBtn').addEventListener('click', startCeremony);
+document.getElementById('spinBtn').addEventListener('click', spin);
+document.getElementById('nextBtn').addEventListener('click', () => {
+  if (spinning) return;
+  callNext();
+});
+document.getElementById('muteBtn').addEventListener('click', toggleSound);
+document.getElementById('restartBtn').addEventListener('click', () => {
+  document.getElementById('ceremony').classList.remove('active');
+  document.getElementById('finalScreen').classList.remove('active');
+  document.getElementById('startScreen').style.display = 'flex';
+});
+
+/* =================== INICIO =================== */
+wheelRotation = -3*SLICE;
+drawWheel();
+</script>
+</body>
+</html>
